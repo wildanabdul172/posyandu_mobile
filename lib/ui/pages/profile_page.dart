@@ -37,12 +37,20 @@ class _ProfilePageState extends State<ProfilePage> {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  void _logout() {
+  void _logout() async {
+    Get.snackbar(
+      'Logout Berhasil',
+      'Anda telah berhasil logout',
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+    await Future.delayed(const Duration(seconds: 2));
     _prefs.remove('userId');
     _prefs.remove('name');
     _prefs.remove('email');
     _prefs.setBool('isLoggedIn', false);
-    Get.offAllNamed('/');
+    Get.offAllNamed('/login');
   }
 
   void _confirmLogout() {
@@ -157,7 +165,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed('/register-form');
+                      },
                       child: Container(
                         width: double.infinity,
                         height: 40,

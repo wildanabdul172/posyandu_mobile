@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       int? loginTime = await checkLoginTime();
       if (loginTime != null) {
         int currentTime = DateTime.now().millisecondsSinceEpoch;
-        const int logoutDuration = 600000;
+        const int logoutDuration = 3600000;
         if (currentTime - loginTime >= logoutDuration) {
           isLoggedIn = false;
           prefs.remove('userId');
@@ -164,7 +164,7 @@ class MyApp extends StatelessWidget {
                 ),
                 GetPage(
                   name: '/child',
-                  page: () => const ChildHistoryPage(),
+                  page: () => const ChildPage(),
                   transition: Transition.fadeIn,
                 ),
                 GetPage(

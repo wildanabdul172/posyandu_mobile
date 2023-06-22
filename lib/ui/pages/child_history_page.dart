@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:posyandu/models/history_child_model.dart';
+import 'package:posyandu/services/history_child_services.dart';
 import 'package:posyandu/ui/widget/custom_card_History.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../shared/theme.dart';
+import '../widget/custom_icons.dart';
 
 enum MeasurementType {
   tinggiBadan,
@@ -11,7 +16,13 @@ enum MeasurementType {
 }
 
 class ChildHistoryPage extends StatefulWidget {
-  const ChildHistoryPage({Key? key}) : super(key: key);
+  final String childId;
+  final String name;
+  const ChildHistoryPage({
+    super.key,
+    required this.childId,
+    required this.name,
+  });
 
   @override
   State<ChildHistoryPage> createState() => _ChildHistoryPageState();
@@ -19,6 +30,28 @@ class ChildHistoryPage extends StatefulWidget {
 
 class _ChildHistoryPageState extends State<ChildHistoryPage> {
   MeasurementType _selectedMeasurementType = MeasurementType.tinggiBadan;
+  List<HistoryChildResponseModel> _history = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Intl.defaultLocale = 'id_ID';
+    initializeDateFormatting();
+    _fetchHistory();
+  }
+
+  Future<void> _fetchHistory() async {
+    try {
+      List<HistoryChildResponseModel> historyData =
+          await HistoryChildService.fetchHistory();
+      historyData.sort((a, b) => b.dateOfRecord!.compareTo(a.dateOfRecord!));
+      setState(() {
+        _history = historyData;
+      });
+    } catch (e) {
+      print('Failed to fetch history: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +62,7 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
         SliverAppBar(
           pinned: true,
           backgroundColor: Colors.transparent,
+          leading: IconButtonBack(color: kBlueColor),
           centerTitle: true,
           elevation: 0,
           flexibleSpace: FlexibleSpaceBar(
@@ -74,7 +108,7 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
             const SizedBox(height: 20),
             Container(
               height: 60,
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -195,30 +229,15 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
                 ],
               ),
             ),
-            const CustomCardHistory(
-              tanggal: "3 Februari 2023",
-              tBadan: "60",
-              bBadan: "10",
-              lLengan: "4",
-              lKepala: "10",
-              imunisasi: "Campak",
-            ),
-            const CustomCardHistory(
-              tanggal: "3 Februari 2023",
-              tBadan: "60",
-              bBadan: "10",
-              lLengan: "4",
-              lKepala: "10",
-              imunisasi: "Campak",
-            ),
-            const CustomCardHistory(
-              tanggal: "3 Februari 2023",
-              tBadan: "60",
-              bBadan: "10",
-              lLengan: "4",
-              lKepala: "10",
-              imunisasi: "Campak",
-            ),
+            for (int i = 0; i < _history.length; i++)
+              CustomCardHistory(
+                tanggal: _history[i].dateOfRecord,
+                tBadan: _history[i].height.toString(),
+                bBadan: _history[i].weight.toString(),
+                lLengan: _history[i].armCircumference.toString(),
+                lKepala: _history[i].headCircumference.toString(),
+                imunisasi: _history[i].immunization,
+              ),
           ],
         )))
       ]),
@@ -230,44 +249,36 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
 
     switch (_selectedMeasurementType) {
       case MeasurementType.tinggiBadan:
-        dataPoints = [
-          DataPoint(x: 'Jan', y: 60),
-          DataPoint(x: 'Feb', y: 65),
-          DataPoint(x: 'Mar', y: 70),
-          DataPoint(x: 'Apr', y: 72),
-          DataPoint(x: 'May', y: 75),
-          DataPoint(x: 'Jun', y: 78),
-        ];
+        dataPoints = _history.map((history) {
+          final date =
+              DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
+          final month = DateFormat('MMMM', 'id_ID').format(date);
+          return DataPoint(x: month, y: history.height!);
+        }).toList();
         break;
       case MeasurementType.beratBadan:
-        dataPoints = [
-          DataPoint(x: 'Jan', y: 10),
-          DataPoint(x: 'Feb', y: 12),
-          DataPoint(x: 'Mar', y: 15),
-          DataPoint(x: 'Apr', y: 18),
-          DataPoint(x: 'May', y: 20),
-          DataPoint(x: 'Jun', y: 22),
-        ];
+        dataPoints = _history.map((history) {
+          final date =
+              DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
+          final month = DateFormat('MMMM', 'id_ID').format(date);
+          return DataPoint(x: month, y: history.weight!);
+        }).toList();
         break;
       case MeasurementType.lingkarLengan:
-        dataPoints = [
-          DataPoint(x: 'Jan', y: 4),
-          DataPoint(x: 'Feb', y: 4.5),
-          DataPoint(x: 'Mar', y: 5),
-          DataPoint(x: 'Apr', y: 5.5),
-          DataPoint(x: 'May', y: 6),
-          DataPoint(x: 'Jun', y: 6.5),
-        ];
+        dataPoints = _history.map((history) {
+          final date =
+              DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
+          final month = DateFormat('MMMM', 'id_ID').format(date);
+          return DataPoint(x: month, y: history.armCircumference!);
+        }).toList();
         break;
       case MeasurementType.lingkarKepala:
-        dataPoints = [
-          DataPoint(x: 'Jan', y: 10),
-          DataPoint(x: 'Feb', y: 11),
-          DataPoint(x: 'Mar', y: 12),
-          DataPoint(x: 'Apr', y: 13),
-          DataPoint(x: 'May', y: 14),
-          DataPoint(x: 'Jun', y: 15),
-        ];
+        dataPoints = _history.map((history) {
+          final date =
+              DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
+          final month = DateFormat('MMMM', 'id_ID').format(date);
+          return DataPoint(x: month, y: history.headCircumference!);
+        }).toList();
         break;
     }
 
@@ -287,7 +298,7 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
 
 class DataPoint {
   final String x;
-  final double y;
+  final int y;
 
   DataPoint({required this.x, required this.y});
 }
