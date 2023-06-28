@@ -42,59 +42,62 @@ class _ArtikelPageState extends State<ArtikelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            elevation: 0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                color: kWhiteColor,
+      body: RefreshIndicator(
+        onRefresh: _fetchArticles,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              elevation: 0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  color: kWhiteColor,
+                ),
+              ),
+              title: Image.asset(
+                "assets/images/Posyandu_Logo_Blue_Icon.png",
+                width: 40,
+                height: 40,
               ),
             ),
-            title: Image.asset(
-              "assets/images/Posyandu_Logo_Blue_Icon.png",
-              width: 40,
-              height: 40,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Align(
-                            child: Text(
-                              "Artikel",
-                              style: blackTextStyle.copyWith(
-                                fontSize: 18,
-                                fontWeight: semiBold,
+            SliverToBoxAdapter(
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Align(
+                              child: Text(
+                                "Artikel",
+                                style: blackTextStyle.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: semiBold,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          for (int i = 0; i < _articles.length && i < 5; i++)
-                            CustomCardArticle(
-                              imageUrl: _articles[i].image!,
-                              title: _articles[i].title!,
-                              date: _articles[i].createAt!,
-                              content: _articles[i].content!,
+                            const SizedBox(
+                              height: 20,
                             ),
-                        ],
+                            for (int i = 0; i < _articles.length && i < 5; i++)
+                              CustomCardArticle(
+                                imageUrl: _articles[i].image!,
+                                title: _articles[i].title!,
+                                date: _articles[i].createAt!,
+                                content: _articles[i].content!,
+                              ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -32,13 +32,12 @@ class ChildrenService {
   }
 
   static Future<List<ChildrenResponseModel>> fetchChildren(String id) async {
-    final url = Uri.parse('$_baseUrl/api/master-data/users/4/children');
+    final url = Uri.parse('$_baseUrl/api/master-data/users/$id/children');
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
-
       List<ChildrenResponseModel> childrens = jsonResponse
           .map((item) => ChildrenResponseModel.fromJson(item))
           .toList();

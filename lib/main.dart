@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:posyandu/ui/pages/artikel_page.dart';
-import 'package:posyandu/ui/pages/child_history_page.dart';
 import 'package:posyandu/ui/pages/child_page.dart';
 import 'package:posyandu/ui/pages/home_page.dart';
 import 'package:posyandu/ui/pages/login_page.dart';

@@ -57,7 +57,7 @@ class ChildrenResponseModel {
     childId = json['child_id'];
     name = json['name'];
     gender = json['gender'];
-    birtOfDate = DateFormat('yyyy-MM-dd kk:mm')
+    birtOfDate = DateFormat('dd MMMM yyyy')
         .format(DateTime.parse(json['date_of_birth']));
     address = json['address'];
     parentName = json['parent_name'];

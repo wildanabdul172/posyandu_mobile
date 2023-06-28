@@ -46,110 +46,118 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _refreshData() async {
+    await _fetchArticles();
+    const CarouselCardHome();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: kGreyColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 320,
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: kBlueColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                ),
-                SafeArea(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(
-                              20,
-                            ),
-                            width: 36,
-                            height: 36,
-                            child: Image.asset(
-                                'assets/images/Posyandu_Logo_White.png'),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Selamat Datang,",
-                                style: whiteTextStyle.copyWith(
-                                  fontSize: 16,
-                                  fontWeight: semiBold,
-                                ),
-                              ),
-                              Text(
-                                name.toString(),
-                                style: whiteTextStyle.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: semiBold,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 220,
-                        child: CarouselCardHome(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              padding: const EdgeInsets.all(
-                20,
-              ),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: kWhiteColor,
-              ),
-              child: Column(
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
                 children: [
-                  Text(
-                    "New Artikel",
-                    style: blackTextStyle.copyWith(
-                      fontSize: 18,
-                      fontWeight: bold,
+                  Container(
+                    width: double.infinity,
+                    height: 320,
+                    decoration: BoxDecoration(
+                      color: kWhiteColor,
                     ),
                   ),
-                  for (int i = 0; i < _articles.length && i < 5; i++)
-                    CustomCardArticle(
-                      imageUrl: _articles[i].image!,
-                      title: _articles[i].title!,
-                      date: _articles[i].createAt!,
-                      content: _articles[i].content!,
+                  Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: kBlueColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
                     ),
+                  ),
+                  SafeArea(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(
+                                20,
+                              ),
+                              width: 36,
+                              height: 36,
+                              child: Image.asset(
+                                  'assets/images/Posyandu_Logo_White.png'),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Selamat Datang,",
+                                  style: whiteTextStyle.copyWith(
+                                    fontSize: 16,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                                Text(
+                                  name.toString(),
+                                  style: whiteTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 220,
+                          child: CarouselCardHome(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 10,
+                ),
+                padding: const EdgeInsets.all(
+                  20,
+                ),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: kWhiteColor,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "New Artikel",
+                      style: blackTextStyle.copyWith(
+                        fontSize: 18,
+                        fontWeight: bold,
+                      ),
+                    ),
+                    for (int i = 0; i < _articles.length && i < 5; i++)
+                      CustomCardArticle(
+                        imageUrl: _articles[i].image!,
+                        title: _articles[i].title!,
+                        date: _articles[i].createAt!,
+                        content: _articles[i].content!,
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

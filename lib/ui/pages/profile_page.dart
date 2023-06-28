@@ -174,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.all(
                           6,
                         ),
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
@@ -228,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.all(
                           6,
                         ),
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
@@ -286,12 +286,12 @@ class _ProfilePageState extends State<ProfilePage> {
               content: const Text('Apakah Anda yakin ingin keluar?'),
               actions: [
                 TextButton(
-                  child: const Text('Batal'),
                   onPressed: _cancelLogout,
+                  child: const Text('Batal'),
                 ),
                 ElevatedButton(
-                  child: const Text('Keluar'),
                   onPressed: _confirmLogout,
+                  child: const Text('Keluar'),
                 ),
               ],
             )

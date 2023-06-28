@@ -3,7 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:posyandu/models/history_child_model.dart';
 import 'package:posyandu/services/history_child_services.dart';
-import 'package:posyandu/ui/widget/custom_card_History.dart';
+import 'package:posyandu/ui/widget/custom_card_history.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../shared/theme.dart';
 import '../widget/custom_icons.dart';
@@ -37,13 +37,13 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
     super.initState();
     Intl.defaultLocale = 'id_ID';
     initializeDateFormatting();
-    _fetchHistory();
+    _fetchHistory(widget.childId);
   }
 
-  Future<void> _fetchHistory() async {
+  Future<void> _fetchHistory(String childId) async {
     try {
       List<HistoryChildResponseModel> historyData =
-          await HistoryChildService.fetchHistory();
+          await HistoryChildService.fetchHistory(childId);
       historyData.sort((a, b) => b.dateOfRecord!.compareTo(a.dateOfRecord!));
       setState(() {
         _history = historyData;
@@ -93,7 +93,7 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              "Raka Al mair",
+              widget.name,
               style: blackTextStyle.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,

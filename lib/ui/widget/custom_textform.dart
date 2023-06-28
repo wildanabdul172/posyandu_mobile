@@ -183,7 +183,7 @@ class CustomTextFormDropDown extends StatelessWidget {
   final IconData icon;
   final String? Function(String?)? validator;
   final String? Function(String?)? onSaved;
-  final List<String> dropdownValues;
+  final List<String?> dropdownValues;
 
   const CustomTextFormDropDown({
     Key? key,
@@ -236,11 +236,11 @@ class CustomTextFormDropDown extends StatelessWidget {
         ),
         validator: validator,
         onSaved: onSaved,
-        items: dropdownValues.map((String value) {
+        items: dropdownValues.map((String? value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-              value,
+              value!,
               style: blackTextStyle.copyWith(
                 fontSize: 12,
                 fontWeight: regular,

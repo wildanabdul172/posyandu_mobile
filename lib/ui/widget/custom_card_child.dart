@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:posyandu/ui/pages/child_history_page.dart';
 
 import '../../shared/theme.dart';
@@ -23,6 +24,28 @@ class CustomCardChild extends StatelessWidget {
     required this.parentPhoneNumber,
     required this.userId,
   });
+
+  String calculateAge(String dateOfBirthString) {
+    final dateFormat = DateFormat('dd MMMM yy');
+    final dateOfBirth = dateFormat.parse(dateOfBirthString);
+    final currentDate = DateTime.now();
+    int ageInYears = currentDate.year - dateOfBirth.year;
+    int monthDiff = currentDate.month - dateOfBirth.month;
+    int dayDiff = currentDate.day - dateOfBirth.day;
+
+    // Jika tanggal lahir di bulan yang sama atau belum melewati hari ulang tahun
+    if (monthDiff < 0 || (monthDiff == 0 && dayDiff < 0)) {
+      ageInYears--;
+      monthDiff += 12; // Menambahkan 12 bulan agar selisih positif
+    }
+
+    String ageText = '$ageInYears Tahun';
+    if (monthDiff > 0) {
+      ageText += ' $monthDiff Bulan';
+    }
+
+    return ageText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +105,7 @@ class CustomCardChild extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    name,
+                    calculateAge(dateOfBirth),
                     style: blackTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: medium,

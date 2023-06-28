@@ -1,8 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:posyandu/ui/widget/custom_card_queue.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/queue_model.dart';
+import '../../models/schedule_model.dart';
+import '../../services/queue_services.dart';
+import '../../services/schedule_service.dart';
 import '../../shared/theme.dart';
+import '../widget/schedule_card.dart';
 
-class SchedulePage extends StatelessWidget {
+class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
+
+  @override
+  State<SchedulePage> createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  List<QueueResponse> _queueList = [];
+  List<Schedule> _scheduleList = [];
+  late SharedPreferences _prefs;
+  List<QueueResponse> _queueUser = [];
+  String? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    // _fetchQueue();
+    _getUserData();
+    _fetchSchedule();
+  }
+
+  Future<void> _onRefresh() async {
+    await _fetchSchedule();
+  }
+
+  void _getUserData() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = _prefs.getString('userId');
+    });
+    _fetchQueuebyUserId();
+  }
+
+  // Future<void> _fetchQueue() async {
+  //   try {
+  //     List<QueueResponse> queueData = await QueueService.getQueueData();
+
+  //     setState(() {
+  //       _queueList = queueData;
+  //     });
+  //   } catch (e) {
+  //     print('Failed to fetch Queue: $e');
+  //   }
+  // }
+
+  Future<void> _fetchQueuebyUserId() async {
+    try {
+      List<QueueResponse> queueData =
+          await QueueService.fetchQueueByUserId(userId!);
+      setState(() {
+        _queueUser = queueData;
+      });
+    } catch (e) {
+      print('Failed to fetch Queue By User Id: $e');
+    }
+  }
+
+  Future<void> _fetchSchedule() async {
+    try {
+      List<Schedule> scheduleData = await ScheduleService.fetchSchedule();
+      scheduleData.sort((a, b) => b.activityDate!.compareTo(a.activityDate!));
+      setState(() {
+        _scheduleList = scheduleData;
+      });
+    } catch (e) {
+      print('Failed to fetch articles: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,463 +92,161 @@ class SchedulePage extends StatelessWidget {
           'assets/images/Posyandu_Logo_White.png',
           height: 40,
           width: 40,
-          // Menambahkan alignment untuk mengatur posisi gambar di tengah
           alignment: Alignment.center,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: kBlueColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 340,
+                    decoration: BoxDecoration(
+                      color: kWhiteColor,
                     ),
                   ),
-                ),
-                SafeArea(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
+                  Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: kBlueColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
                       ),
-                      Align(
-                        child: Text(
-                          "Pendaftaran Online",
-                          style: whiteTextStyle.copyWith(
+                    ),
+                  ),
+                  SafeArea(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          child: Text(
+                            "Pendaftaran Online",
+                            style: whiteTextStyle.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 180,
+                          child: ListView(
+                            padding: const EdgeInsets.all(
+                              10,
+                            ),
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              for (int i = 0; i < _queueUser.length; i++)
+                                CustomCardQueueUser(
+                                  name: _queueUser[i].child?.name,
+                                  date: _queueUser[i].dateOfQueue,
+                                  location:
+                                      _queueUser[i].posyandu?.posyanduName,
+                                  queue: _queueUser[i].queueNumber.toString(),
+                                ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Flamboyan",
+                                address: 'Kp.Pangkalan RT 05 RW 02',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Melati 1",
+                                address: 'Kp.Babakan RT 03 RW 01',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Melati 2",
+                                address: 'Kp.Babakan RT 11 RW 03',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Mawar",
+                                address: 'Kp.Liungtutut RT 18 RW 08',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Dahlia",
+                                address: 'Kp.Bojongnangka RT 25 RW 07',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Kaca Piring 1",
+                                address: 'Perum Babakan RT RW 10',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Kaca Piring 2",
+                                address: 'Perum Babakan RT RW 10',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Anggrek",
+                                address: 'Kp.Padurenan RT 27 RW 09',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Kenanga 1",
+                                address: 'Kp.Gunungguruh Girang RT 14 RW 04',
+                                queue: "0",
+                              ),
+                              CustomCardQueuePosyandu(
+                                date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
+                                    .format(DateTime.now()),
+                                location: "Posyandu Kenanga 2",
+                                address: 'Kp.Gunungguruh Girang RT 13 RW 04',
+                                queue: "0",
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          "Jadwal Posyandu",
+                          style: blackTextStyle.copyWith(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: semiBold,
                           ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(
-                          20,
-                        ),
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                        ),
-                        height: 180,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: kWhiteColor,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 4,
-                              offset: const Offset(0, 8),
-                              color: kGreyColor,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(
-                            20,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Nama",
-                                    style: blackTextStyle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: semiBold,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "Raka Al Mair",
-                                      style: blackTextStyle.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: semiBold,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Jadwal",
-                                    style: blackTextStyle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: semiBold,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "3 Februari 2023",
-                                      style: blackTextStyle.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: semiBold,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Lokasi",
-                                    style: blackTextStyle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: semiBold,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "Posyandu Anggrek",
-                                      style: blackTextStyle.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: semiBold,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Antrian",
-                                    style: blackTextStyle.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: semiBold,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "20",
-                                      style: blackTextStyle.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: semiBold,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Jadwal Posyandu",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 20,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Container(
-              color: kWhiteColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
-              ),
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              width: double.infinity,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Posyandu Anggrek",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        "Jumat, 3 Februari 2023",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 12,
-                          fontWeight: semiBold,
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 100,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
                         ),
                       ],
-                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: kBlueColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        "Daftar",
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
-            ),
-            Container(
-              color: kWhiteColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
-              ),
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              width: double.infinity,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Posyandu Anggrek",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        "Jumat, 3 Februari 2023",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 12,
-                          fontWeight: semiBold,
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 100,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: kGreyColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        "Daftar",
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: kWhiteColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
-              ),
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              width: double.infinity,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Posyandu Anggrek",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        "Jumat, 3 Februari 2023",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 12,
-                          fontWeight: semiBold,
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 100,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: kGreyColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        "Daftar",
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: kWhiteColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
-              ),
-              margin: const EdgeInsets.only(
-                top: 10,
-              ),
-              width: double.infinity,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Posyandu Anggrek",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 16,
-                          fontWeight: semiBold,
-                        ),
-                      ),
-                      Text(
-                        "Jumat, 3 Februari 2023",
-                        style: blackTextStyle.copyWith(
-                          fontSize: 12,
-                          fontWeight: semiBold,
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 100,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: kGreyColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        "Daftar",
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+              for (int i = 0; i < _scheduleList.length; i++)
+                ScheduleCard(
+                  activityId: _scheduleList[i].activityId!,
+                  activityName: _scheduleList[i].activityName!,
+                  activityDate: _scheduleList[i].activityDate!,
+                  activityTime: _scheduleList[i].activityTime!,
+                  activityLocation: _scheduleList[i].activityLocation!,
+                  posyandu: _scheduleList[i].posyandu!,
+                ),
+            ],
+          ),
         ),
       ),
     );

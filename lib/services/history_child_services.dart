@@ -5,8 +5,9 @@ import 'package:posyandu/models/history_child_model.dart';
 class HistoryChildService {
   static const String _baseUrl = 'http://192.168.1.9:4400';
 
-  static Future<List<HistoryChildResponseModel>> fetchHistory() async {
-    final url = Uri.parse('$_baseUrl/api/master-data/children/3/healthRecords');
+  static Future<List<HistoryChildResponseModel>> fetchHistory(String id) async {
+    final url =
+        Uri.parse('$_baseUrl/api/master-data/children/$id/healthRecords');
 
     final response = await http.get(url);
 

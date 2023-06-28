@@ -21,7 +21,6 @@ class _ChildPageState extends State<ChildPage> {
   void initState() {
     super.initState();
     _getUserData();
-    _fetchChildren();
   }
 
   void _getUserData() async {
@@ -29,12 +28,13 @@ class _ChildPageState extends State<ChildPage> {
     setState(() {
       id = _prefs.getString('userId');
     });
+    _fetchChildren();
   }
 
   Future<void> _fetchChildren() async {
     try {
       List<ChildrenResponseModel> childrenList =
-          await ChildrenService.fetchChildren(id.toString());
+          await ChildrenService.fetchChildren(id!);
       setState(() {
         _children = childrenList;
       });
@@ -57,32 +57,38 @@ class _ChildPageState extends State<ChildPage> {
           alignment: Alignment.center,
         ),
       ),
-      body: Column(
-        children: [
-          Align(
-            child: Text(
-              "Data Anak",
-              style: blackTextStyle.copyWith(
-                fontSize: 18,
-                fontWeight: semiBold,
+      body: RefreshIndicator(
+        onRefresh: _fetchChildren,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              Align(
+                child: Text(
+                  "Data Anak",
+                  style: blackTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: semiBold,
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(
+                height: 20,
+              ),
+              for (int i = 0; i < _children.length; i++)
+                CustomCardChild(
+                  childId: _children[i].childId!.toString(),
+                  name: _children[i].name!,
+                  dateOfBirth: _children[i].birtOfDate!,
+                  gender: _children[i].gender!,
+                  address: _children[i].address!,
+                  parentName: _children[i].parentName!,
+                  parentPhoneNumber: _children[i].parentPhoneNumber!,
+                  userId: _children[i].userId.toString(),
+                ),
+            ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          for (int i = 0; i < _children.length; i++)
-            CustomCardChild(
-              childId: _children[i].childId!.toString(),
-              name: _children[i].name!,
-              dateOfBirth: _children[i].birtOfDate!,
-              gender: _children[i].gender!,
-              address: _children[i].address!,
-              parentName: _children[i].parentName!,
-              parentPhoneNumber: _children[i].parentPhoneNumber!,
-              userId: _children[i].userId.toString(),
-            ),
-        ],
+        ),
       ),
     );
   }
