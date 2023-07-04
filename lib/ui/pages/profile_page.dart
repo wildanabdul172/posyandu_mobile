@@ -76,7 +76,6 @@ class _ProfilePageState extends State<ProfilePage> {
           SliverAppBar(
             pinned: true,
             backgroundColor: Colors.transparent,
-            leading: IconButtonBack(color: kBlueColor),
             centerTitle: true,
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(

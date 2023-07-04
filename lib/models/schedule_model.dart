@@ -22,12 +22,24 @@ class Schedule {
     activityId = json['activity_id'];
     activityName = json['activity_name'];
     initializeDateFormatting('id_ID');
-    activityDate = DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
-        .format(DateTime.parse(json['activity_date']));
-    activityTime =
-        DateFormat('kk:mm').format(DateTime.parse(json['activity_time']));
+    activityDate = _formatDate(json['activity_date']);
+    activityTime = _formatTime(json['activity_time']);
     activityLocation = json['activity_location'];
     posyandu = PosyanduSchedule.fromJson(json['posyandu']);
+  }
+  String _formatDate(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime localDateTime = dateTime.toLocal();
+    String formattedDate =
+        DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(localDateTime);
+    return formattedDate;
+  }
+
+  String _formatTime(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime localDateTime = dateTime.toLocal();
+    String formattedTime = DateFormat('kk:mm', 'id_ID').format(localDateTime);
+    return formattedTime;
   }
 }
 

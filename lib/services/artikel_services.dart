@@ -13,6 +13,10 @@ class ArtikelService {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Article> articles =
           jsonResponse.map((item) => Article.fromJson(item)).toList();
+
+      // Mengurutkan artikel berdasarkan id terbaru
+      articles.sort((a, b) => b.id!.compareTo(a.id!));
+
       return articles;
     } else {
       throw Exception('Failed to fetch artikel');

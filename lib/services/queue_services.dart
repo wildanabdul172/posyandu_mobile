@@ -6,36 +6,16 @@ import '../models/queue_model.dart';
 class QueueService {
   static const _baseUrl = 'http://192.168.1.9:4400';
 
-  static Future<List<QueueResponse>> getQueueData() async {
+  static Future<QueueResponse> getQueueData(int id) async {
     final response = await http.get(
-      Uri.parse('$_baseUrl/api/master-data/queue'),
+      Uri.parse('$_baseUrl/api/master-data/posyandu/$id/queue'),
     );
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<QueueResponse> queueList =
-          jsonResponse.map((item) => QueueResponse.fromJson(item)).toList();
-
-      List<int> posyanduIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      List<String> queueNumbers = [];
-
-      for (int posyanduId in posyanduIds) {
-        QueueResponse queue = queueList.firstWhere(
-          (queue) => queue.posyandu?.posyanduId == posyanduId,
-          orElse: () => QueueResponse(),
-        );
-
-        if (queue != null) {
-          queueNumbers.add(queue.queueNumber as String);
-        } else {
-          queueNumbers.add("Tidak ada antrian");
-        }
-      }
-
-      print("Nomor Antrian: $queueNumbers");
-
-      return queueList;
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      QueueResponse queue = QueueResponse.fromJson(jsonResponse);
+      return queue;
     } else {
-      throw Exception('Gagal mengambil data antrian');
+      throw Exception('Failed to fetch artikel');
     }
   }
 

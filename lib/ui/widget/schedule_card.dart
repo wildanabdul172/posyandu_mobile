@@ -60,10 +60,10 @@ class ScheduleCard extends StatelessWidget {
                 ),
               ),
               Text(
-                activityDate!,
+                '$activityDate $activityTime WIB',
                 style: blackTextStyle.copyWith(
                   fontSize: 12,
-                  fontWeight: semiBold,
+                  fontWeight: medium,
                 ),
               )
             ],

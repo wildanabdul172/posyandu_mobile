@@ -37,7 +37,6 @@ class RegisterQueuePage extends StatefulWidget {
 
 class _RegisterQueuePageState extends State<RegisterQueuePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _selectedChild;
   int? _selectedChildId;
   late SharedPreferences _prefs;
   String? id;
@@ -75,7 +74,7 @@ class _RegisterQueuePageState extends State<RegisterQueuePage> {
       form.save();
 
       final parsedDate =
-          DateFormat('EEEE, dd MM yyyy', 'id_ID').parse(widget.activityDate!);
+          DateFormat('EEEE, dd MMMM yyyy', 'id_ID').parse(widget.activityDate!);
       final formattedDate =
           DateFormat('yyyy-MM-ddTHH:mm:ss.SSSZ').format(parsedDate);
 
@@ -99,7 +98,7 @@ class _RegisterQueuePageState extends State<RegisterQueuePage> {
           colorText: Colors.white,
         );
         await Future.delayed(const Duration(seconds: 3));
-        Get.toNamed('/main');
+        Get.offNamed('/main');
       } else if (RegisterService.lastStatusCode == 400) {
         Get.snackbar(
           'Registrasi Gagal',

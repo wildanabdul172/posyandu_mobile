@@ -55,8 +55,8 @@ class DetailArtikelPage extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           color: kBlackColor.withOpacity(0.2),
-                          blurRadius: 4,
-                          offset: const Offset(0, 8),
+                          blurRadius: 6,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),

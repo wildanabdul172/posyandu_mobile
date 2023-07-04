@@ -44,7 +44,6 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
     try {
       List<HistoryChildResponseModel> historyData =
           await HistoryChildService.fetchHistory(childId);
-      historyData.sort((a, b) => b.dateOfRecord!.compareTo(a.dateOfRecord!));
       setState(() {
         _history = historyData;
       });
@@ -107,126 +106,132 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
             ),
             const SizedBox(height: 20),
             Container(
-              height: 60,
+              height: 80,
               padding: const EdgeInsets.symmetric(vertical: 10),
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedMeasurementType = MeasurementType.tinggiBadan;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedMeasurementType ==
-                              MeasurementType.tinggiBadan
-                          ? kBlueColor
-                          : kWhiteColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      'Tinggi Badan',
-                      style: TextStyle(
-                        color: _selectedMeasurementType ==
+              child: SizedBox(
+                height: 80,
+                child: ListView(
+                  padding: const EdgeInsets.all(
+                    10,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedMeasurementType =
+                              MeasurementType.tinggiBadan;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedMeasurementType ==
                                 MeasurementType.tinggiBadan
-                            ? kWhiteColor
-                            : kBlackColor,
+                            ? kBlueColor
+                            : kWhiteColor,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        'Tinggi Badan',
+                        style: TextStyle(
+                          color: _selectedMeasurementType ==
+                                  MeasurementType.tinggiBadan
+                              ? kWhiteColor
+                              : kBlackColor,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedMeasurementType = MeasurementType.beratBadan;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _selectedMeasurementType == MeasurementType.beratBadan
-                              ? kBlueColor
-                              : kWhiteColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      'Berat Badan',
-                      style: TextStyle(
-                        color: _selectedMeasurementType ==
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedMeasurementType = MeasurementType.beratBadan;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedMeasurementType ==
                                 MeasurementType.beratBadan
-                            ? kWhiteColor
-                            : kBlackColor,
+                            ? kBlueColor
+                            : kWhiteColor,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        'Berat Badan',
+                        style: TextStyle(
+                          color: _selectedMeasurementType ==
+                                  MeasurementType.beratBadan
+                              ? kWhiteColor
+                              : kBlackColor,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedMeasurementType =
-                            MeasurementType.lingkarLengan;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedMeasurementType ==
-                              MeasurementType.lingkarLengan
-                          ? kBlueColor
-                          : kWhiteColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      'Lingkar Lengan',
-                      style: TextStyle(
-                        color: _selectedMeasurementType ==
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedMeasurementType =
+                              MeasurementType.lingkarLengan;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedMeasurementType ==
                                 MeasurementType.lingkarLengan
-                            ? kWhiteColor
-                            : kBlackColor,
+                            ? kBlueColor
+                            : kWhiteColor,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        'Lingkar Lengan',
+                        style: TextStyle(
+                          color: _selectedMeasurementType ==
+                                  MeasurementType.lingkarLengan
+                              ? kWhiteColor
+                              : kBlackColor,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedMeasurementType =
-                            MeasurementType.lingkarKepala;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedMeasurementType ==
-                              MeasurementType.lingkarKepala
-                          ? kBlueColor
-                          : kWhiteColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Text(
-                      'Lingkar Kepala',
-                      style: TextStyle(
-                        color: _selectedMeasurementType ==
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedMeasurementType =
+                              MeasurementType.lingkarKepala;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedMeasurementType ==
                                 MeasurementType.lingkarKepala
-                            ? kWhiteColor
-                            : kBlackColor,
+                            ? kBlueColor
+                            : kWhiteColor,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        'Lingkar Kepala',
+                        style: TextStyle(
+                          color: _selectedMeasurementType ==
+                                  MeasurementType.lingkarKepala
+                              ? kWhiteColor
+                              : kBlackColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             for (int i = 0; i < _history.length; i++)
@@ -249,7 +254,8 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
 
     switch (_selectedMeasurementType) {
       case MeasurementType.tinggiBadan:
-        dataPoints = _history.map((history) {
+        dataPoints =
+            _history.where((history) => history.height != 0).map((history) {
           final date =
               DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
           final month = DateFormat('MMMM', 'id_ID').format(date);
@@ -257,7 +263,8 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
         }).toList();
         break;
       case MeasurementType.beratBadan:
-        dataPoints = _history.map((history) {
+        dataPoints =
+            _history.where((history) => history.weight != 0).map((history) {
           final date =
               DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
           final month = DateFormat('MMMM', 'id_ID').format(date);
@@ -265,7 +272,9 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
         }).toList();
         break;
       case MeasurementType.lingkarLengan:
-        dataPoints = _history.map((history) {
+        dataPoints = _history
+            .where((history) => history.armCircumference != 0)
+            .map((history) {
           final date =
               DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
           final month = DateFormat('MMMM', 'id_ID').format(date);
@@ -273,7 +282,9 @@ class _ChildHistoryPageState extends State<ChildHistoryPage> {
         }).toList();
         break;
       case MeasurementType.lingkarKepala:
-        dataPoints = _history.map((history) {
+        dataPoints = _history
+            .where((history) => history.headCircumference != 0)
+            .map((history) {
           final date =
               DateFormat('dd MMMM yyyy', 'id_ID').parse(history.dateOfRecord!);
           final month = DateFormat('MMMM', 'id_ID').format(date);

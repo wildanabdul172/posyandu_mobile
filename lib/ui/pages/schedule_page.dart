@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:posyandu/ui/widget/custom_card_queue.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +18,16 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  List<QueueResponse> _queueList = [];
+  List<QueueResponse> _queueFlamboyan = [];
+  List<QueueResponse> _queueMelatiOne = [];
+  List<QueueResponse> _queueMelatiTwo = [];
+  List<QueueResponse> _queueMawar = [];
+  List<QueueResponse> _queueDahlia = [];
+  List<QueueResponse> _queueKacaPiringOne = [];
+  List<QueueResponse> _queueKacaPiringTwo = [];
+  List<QueueResponse> _queueAnggrek = [];
+  List<QueueResponse> _queueKenangaOne = [];
+  List<QueueResponse> _queueKenangaTwo = [];
   List<Schedule> _scheduleList = [];
   late SharedPreferences _prefs;
   List<QueueResponse> _queueUser = [];
@@ -26,13 +36,47 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    // _fetchQueue();
+    initializeDateFormatting('id_ID');
     _getUserData();
     _fetchSchedule();
+    _fetchQueueDahlia();
+    _fetchQueueFlamboyan();
+    _fetchQueueMelatiOne();
+    _fetchQueueMelatiTwo();
+    _fetchQueueMawar();
+    _fetchQueueKacaPiringOne();
+    _fetchQueueKacaPiringTwo();
+    _fetchQueueAnggrek();
+    _fetchQueueKenangaOne();
+    _fetchQueueKenangaTwo();
   }
 
   Future<void> _onRefresh() async {
-    await _fetchSchedule();
+    _fetchSchedule();
+    _fetchQueueDahlia();
+    _fetchQueueFlamboyan();
+    _fetchQueueMelatiOne();
+    _fetchQueueMelatiTwo();
+    _fetchQueueMawar();
+    _fetchQueueKacaPiringOne();
+    _fetchQueueKacaPiringTwo();
+    _fetchQueueAnggrek();
+    _fetchQueueKenangaOne();
+    _fetchQueueKenangaTwo();
+
+    setState(() {
+      _scheduleList = [];
+      _queueFlamboyan = [];
+      _queueMelatiOne = [];
+      _queueMelatiTwo = [];
+      _queueMawar = [];
+      _queueDahlia = [];
+      _queueKacaPiringOne = [];
+      _queueKacaPiringTwo = [];
+      _queueAnggrek = [];
+      _queueKenangaOne = [];
+      _queueKenangaTwo = [];
+    });
   }
 
   void _getUserData() async {
@@ -43,24 +87,147 @@ class _SchedulePageState extends State<SchedulePage> {
     _fetchQueuebyUserId();
   }
 
-  // Future<void> _fetchQueue() async {
-  //   try {
-  //     List<QueueResponse> queueData = await QueueService.getQueueData();
+  Future<void> _fetchQueueDahlia() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(5);
 
-  //     setState(() {
-  //       _queueList = queueData;
-  //     });
-  //   } catch (e) {
-  //     print('Failed to fetch Queue: $e');
-  //   }
-  // }
+      setState(() {
+        _queueDahlia = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueFlamboyan() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(1);
+
+      setState(() {
+        _queueFlamboyan = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueMelatiOne() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(2);
+
+      setState(() {
+        _queueMelatiOne = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueMelatiTwo() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(3);
+
+      setState(() {
+        _queueMelatiTwo = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueMawar() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(4);
+
+      setState(() {
+        _queueMawar = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueKacaPiringOne() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(6);
+
+      setState(() {
+        _queueKacaPiringOne = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueKacaPiringTwo() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(7);
+
+      setState(() {
+        _queueKacaPiringTwo = [queueData];
+        print(_queueKacaPiringTwo[0]);
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueAnggrek() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(8);
+
+      setState(() {
+        _queueAnggrek = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueKenangaOne() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(9);
+
+      setState(() {
+        _queueKenangaOne = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
+
+  Future<void> _fetchQueueKenangaTwo() async {
+    try {
+      QueueResponse queueData = await QueueService.getQueueData(10);
+
+      setState(() {
+        _queueKenangaTwo = [queueData];
+      });
+    } catch (e) {
+      print('Failed to fetch Queue: $e');
+    }
+  }
 
   Future<void> _fetchQueuebyUserId() async {
     try {
       List<QueueResponse> queueData =
           await QueueService.fetchQueueByUserId(userId!);
+
+      // Filter data berdasarkan hari ini
+      DateTime today = DateTime.now();
+      List<QueueResponse> todayQueue = queueData.where((queue) {
+        // Parsing tanggal dari string menjadi objek DateTime
+        DateTime queueDate =
+            DateFormat('EEEE, dd MMMM yyyy', 'id_ID').parse(queue.dateOfQueue!);
+
+        // Bandingkan tanggal dengan tanggal hari ini
+        return queueDate.year == today.year &&
+            queueDate.month == today.month &&
+            queueDate.day == today.day;
+      }).toList();
+
       setState(() {
-        _queueUser = queueData;
+        _queueUser = todayQueue;
       });
     } catch (e) {
       print('Failed to fetch Queue By User Id: $e');
@@ -98,6 +265,7 @@ class _SchedulePageState extends State<SchedulePage> {
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               Stack(
@@ -156,70 +324,94 @@ class _SchedulePageState extends State<SchedulePage> {
                                     .format(DateTime.now()),
                                 location: "Posyandu Flamboyan",
                                 address: 'Kp.Pangkalan RT 05 RW 02',
-                                queue: "0",
+                                queue: _queueFlamboyan.isNotEmpty
+                                    ? _queueFlamboyan[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Melati 1",
                                 address: 'Kp.Babakan RT 03 RW 01',
-                                queue: "0",
+                                queue: _queueMelatiOne.isNotEmpty
+                                    ? _queueMelatiOne[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Melati 2",
                                 address: 'Kp.Babakan RT 11 RW 03',
-                                queue: "0",
+                                queue: _queueMelatiTwo.isNotEmpty
+                                    ? _queueMelatiTwo[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Mawar",
                                 address: 'Kp.Liungtutut RT 18 RW 08',
-                                queue: "0",
+                                queue: _queueMawar.isNotEmpty
+                                    ? _queueMawar[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Dahlia",
                                 address: 'Kp.Bojongnangka RT 25 RW 07',
-                                queue: "0",
+                                queue: _queueDahlia.isNotEmpty
+                                    ? _queueDahlia[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Kaca Piring 1",
                                 address: 'Perum Babakan RT RW 10',
-                                queue: "0",
+                                queue: _queueKacaPiringOne.isNotEmpty
+                                    ? _queueKacaPiringOne[0]
+                                        .queueNumber
+                                        .toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Kaca Piring 2",
                                 address: 'Perum Babakan RT RW 10',
-                                queue: "0",
+                                queue: _queueKacaPiringTwo.isNotEmpty
+                                    ? _queueKacaPiringTwo[0]
+                                        .queueNumber
+                                        .toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Anggrek",
                                 address: 'Kp.Padurenan RT 27 RW 09',
-                                queue: "0",
+                                queue: _queueAnggrek.isNotEmpty
+                                    ? _queueAnggrek[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Kenanga 1",
                                 address: 'Kp.Gunungguruh Girang RT 14 RW 04',
-                                queue: "0",
+                                queue: _queueKenangaOne.isNotEmpty
+                                    ? _queueKenangaOne[0].queueNumber.toString()
+                                    : '-',
                               ),
                               CustomCardQueuePosyandu(
                                 date: DateFormat('EEEE, dd MMMM yyyy', 'id_ID')
                                     .format(DateTime.now()),
                                 location: "Posyandu Kenanga 2",
                                 address: 'Kp.Gunungguruh Girang RT 13 RW 04',
-                                queue: "0",
+                                queue: _queueKenangaTwo.isNotEmpty
+                                    ? _queueKenangaTwo[0].queueNumber.toString()
+                                    : '-',
                               ),
                             ],
                           ),

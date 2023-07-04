@@ -18,7 +18,6 @@ class LoginService {
         final responseData = json.decode(response.body);
         return LoginResponseModel.fromJson(responseData);
       } else {
-        print(json.decode(response.body));
         throw Exception('Failed to login');
       }
     } catch (e) {

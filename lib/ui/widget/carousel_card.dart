@@ -26,7 +26,6 @@ class _CarouselCardHomeState extends State<CarouselCardHome> {
   Future<void> _fetchArticles() async {
     try {
       List<Article> artikelData = await ArtikelService.fetchArtikel();
-      artikelData.sort((a, b) => b.createAt!.compareTo(a.createAt!));
       setState(() {
         _articles = artikelData.take(5).toList();
       });

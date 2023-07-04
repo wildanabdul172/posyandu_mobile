@@ -171,7 +171,7 @@ class CustomCardQueuePosyandu extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            offset: const Offset(0, 8),
+            offset: const Offset(0, 4),
             color: kGreyColor,
           ),
         ],

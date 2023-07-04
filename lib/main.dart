@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:posyandu/ui/pages/artikel_page.dart';
 import 'package:posyandu/ui/pages/child_page.dart';
 import 'package:posyandu/ui/pages/home_page.dart';
@@ -14,7 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ui/pages/profile_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting('id_ID', null).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

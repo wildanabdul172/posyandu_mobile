@@ -153,7 +153,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "Form Pendaftaran",
+                          "Form Pendaftaran Anak",
                           style: whiteTextStyle.copyWith(
                               fontWeight: semiBold, fontSize: 18),
                         ),
