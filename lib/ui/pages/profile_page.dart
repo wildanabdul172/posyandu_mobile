@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:posyandu/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../widget/custom_icons.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 

@@ -208,6 +208,7 @@ class _RegisterQueuePageState extends State<RegisterQueuePage> {
                         final selectedChild = _children
                             .firstWhere((child) => child.name == value);
                         _selectedChildId = selectedChild.childId;
+                        return null;
                       },
                       dropdownValues:
                           _children.map((child) => child.name).toList(),

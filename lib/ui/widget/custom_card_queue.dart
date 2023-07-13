@@ -20,17 +20,14 @@ class CustomCardQueueUser extends StatelessWidget {
       padding: const EdgeInsets.all(
         20,
       ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 15,
-      ),
-      height: double.infinity,
-      width: 280,
+      height: 220,
+      width: 300,
       decoration: BoxDecoration(
         color: kWhiteColor,
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            offset: const Offset(0, 8),
+            offset: const Offset(0, 4),
             color: kGreyColor,
           ),
         ],
@@ -161,11 +158,8 @@ class CustomCardQueuePosyandu extends StatelessWidget {
       padding: const EdgeInsets.all(
         20,
       ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
-      height: double.infinity,
-      width: 280,
+      height: 220,
+      width: 300,
       decoration: BoxDecoration(
         color: kWhiteColor,
         boxShadow: [
