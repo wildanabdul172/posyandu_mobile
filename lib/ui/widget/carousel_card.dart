@@ -48,7 +48,7 @@ class _CarouselCardHomeState extends State<CarouselCardHome> {
           child: CarouselSlider(
             items: _articles
                 .map((article) => CarouselTemplate(
-                      imageUrl: 'http://192.168.1.9:4400/${article.image!}',
+                      imageUrl: 'http://192.168.20.23:4400/${article.image!}',
                       title: article.title!,
                     ))
                 .toList(),

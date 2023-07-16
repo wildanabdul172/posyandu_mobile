@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     Text(
-                      "New Artikel",
+                      "Artikel Terbaru",
                       style: blackTextStyle.copyWith(
                         fontSize: 18,
                         fontWeight: bold,

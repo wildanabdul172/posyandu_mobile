@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/login_model.dart';
 
 class LoginService {
-  static const _baseUrl = 'http://192.168.1.9:4400';
+  static const _baseUrl = 'http://192.168.20.23:4400';
 
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
     final url = Uri.parse('$_baseUrl/api/auth/login');

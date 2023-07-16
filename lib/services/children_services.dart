@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:posyandu/models/children_model.dart';
 
 class ChildrenService {
-  static const String _baseUrl = 'http://192.168.1.9:4400';
+  static const String _baseUrl = 'http://192.168.20.23:4400';
   static int? lastStatusCode;
 
   static Future<bool> register(ChildrenRequestModel registerData) async {

@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../models/queue_model.dart';
 
 class QueueService {
-  static const _baseUrl = 'http://192.168.1.9:4400';
+  static const _baseUrl = 'http://192.168.20.23:4400';
 
   static Future<QueueResponse> getQueueData(int id) async {
     final response = await http.get(

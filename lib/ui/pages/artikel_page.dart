@@ -83,7 +83,7 @@ class _ArtikelPageState extends State<ArtikelPage> {
                             const SizedBox(
                               height: 20,
                             ),
-                            for (int i = 0; i < _articles.length && i < 5; i++)
+                            for (int i = 0; i < _articles.length; i++)
                               CustomCardArticle(
                                 imageUrl: _articles[i].image!,
                                 title: _articles[i].title!,
