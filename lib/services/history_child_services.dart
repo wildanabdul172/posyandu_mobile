@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:posyandu/models/history_child_model.dart';
 
 class HistoryChildService {
-  static const String _baseUrl = 'http://192.168.20.23:4400';
+  static const String _baseUrl = 'https://barrxyz.com';
 
   static Future<List<HistoryChildResponseModel>> fetchHistory(String id) async {
     final url =

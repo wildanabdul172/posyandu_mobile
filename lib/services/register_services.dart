@@ -4,7 +4,7 @@ import 'package:posyandu/models/queue_model.dart';
 import 'package:posyandu/models/register_model.dart';
 
 class RegisterService {
-  static const String _baseUrl = 'http://192.168.20.23:4400';
+  static const String _baseUrl = 'https://barrxyz.com';
   static int? lastStatusCode;
 
   static Future<bool> register(Register registerData) async {

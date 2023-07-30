@@ -23,7 +23,7 @@ class CustomCardArticle extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => DetailArtikelPage(
-              imageUrl: 'http://192.168.20.23:4400/$imageUrl',
+              imageUrl: 'https://barrxyz.com/$imageUrl',
               title: title,
               content: content,
               date: date,
@@ -49,7 +49,7 @@ class CustomCardArticle extends StatelessWidget {
               ),
               width: 80,
               child: Image.network(
-                'http://192.168.20.23:4400/$imageUrl',
+                'https://barrxyz.com/$imageUrl',
               ),
             ),
             Column(
